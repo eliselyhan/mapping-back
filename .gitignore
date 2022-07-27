@@ -1,4 +1,4 @@
 cxc/
 classification/*
-!classification/**/*.star
+!*.star
 mrc/

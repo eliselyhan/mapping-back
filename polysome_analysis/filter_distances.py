@@ -14,7 +14,7 @@ def find_smaller_distances(ipdm: np.ndarray) -> np.ndarray:
     np.fill_diagonal(filtered, 10**6)
     return filtered
 
-def apply_threshold(greater_ipdm: np.ndarray, threshold: float=70) -> np.ndarray:
+def apply_threshold(greater_ipdm: np.ndarray, threshold: float=150) -> np.ndarray:
     poly_mask = greater_ipdm > threshold
     filtered_ipdm = ma.array(greater_ipdm, mask=poly_mask).filled(0)
 
