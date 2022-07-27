@@ -1,0 +1,1 @@
+python3 relionsubtomo2ChimeraX.py --i run_data.star --o load_tomo_trophs.cxc --avgAngpix 8 --avgBoxSize "76,76,76" --tomoname 20220121_5970_L5_ts002.mrc.tomostar --avgFilename run_class001.mrc --relion31 1
