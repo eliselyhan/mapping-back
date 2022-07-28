@@ -46,6 +46,7 @@ if __name__=='__main__':
 	df_optics = stardict['optics']	
 	
 	df = stardict['particles']
+
 	# Relion 4.0 or 3.1
 	if args.relion31 == 0:
 		angpix = df_optics.loc[0, 'rlnTomoTiltSeriesPixelSize']	
@@ -53,8 +54,10 @@ if __name__=='__main__':
 	else:
 		angpix = df_optics.loc[0, 'rlnImagePixelSize']
 		dftomo = df[df.rlnMicrographName == TomoName].copy()
-	
-	print(dftomo)
+
+	if "20220106_5991-2_L3_ts002" in TomoName:
+		print(dftomo)
+
 	# added by v0.1
 	dftomo.reset_index(drop=True, inplace=True)
 	       

@@ -1,6 +1,22 @@
-# Created by the starfile Python package (version 0.4.5) at 13:04:22 on 27/07/2022
 
-data_
+# version 30001
+
+data_optics
+
+loop_ 
+_rlnOpticsGroup #1 
+_rlnOpticsGroupName #2 
+_rlnSphericalAberration #3 
+_rlnVoltage #4 
+_rlnImagePixelSize #5 
+_rlnImageSize #6 
+_rlnImageDimensionality #7 
+           1 opticsGroup1     2.700000   300.000000     4.000000          150            3 
+ 
+
+# version 30001
+
+data_particles
 
 loop_
 _rlnCoordinateX #1

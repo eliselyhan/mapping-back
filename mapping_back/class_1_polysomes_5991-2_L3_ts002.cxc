@@ -1,0 +1,9 @@
+open run_class001_zflip.mrc
+open run_class001_zflip.mrc
+
+volume #1-2 step 1 level 0.003900
+
+view matrix mod #1,0.64,0.49,-0.59,4437.45,-0.34,-0.51,-0.79,4517.75,-0.69,0.71,-0.16,1192.87
+view matrix mod #2,-0.04,0.66,0.75,3575.83,-0.05,-0.75,0.66,3131.63,1.00,-0.01,0.06,1113.92
+
+view orient

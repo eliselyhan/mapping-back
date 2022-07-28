@@ -32,6 +32,8 @@ df_particles = df_all['particles']
 
 # names of tomograms
 tomoNames = pd.unique(df_particles['rlnMicrographName'])
+#print("tomoNames: {}".format(tomoNames))
+
 start_index = 0;
 
 # lines in dataframe that lie in polysomes
@@ -40,7 +42,7 @@ df_all_poly = pd.DataFrame();
 
 # angstroms per pixel
 # we are doing everything in angstroms now
-angPix = 8;
+angPix = 4;
 
 # center of box
 box_shift = np.array([35,35,35])*angPix;
@@ -105,8 +107,11 @@ for tomogram in tomoNames:
 	count = 0;
 
 	for i in range(start_index, end_index):
+		
+		#test: adding shiftAngst
+		shiftAngst = df.loc[i, ['rlnOriginXAngst', 'rlnOriginYAngst', 'rlnOriginZAngst']].to_numpy()
+		cm[count, :] = cm[count, :] - shiftAngst;
 
-		#shiftAngst = df.loc[i, ['rlnOriginXAngst', 'rlnOriginYAngst', 'rlnOriginZAngst']].to_numpy()
 		eulers_relion = df.loc[i, ['rlnAngleRot', 'rlnAngleTilt', 'rlnAnglePsi']].tolist()
 		#print(eulers_relion)
 		eulers_radians = [np.radians(x) for x in eulers_relion]
@@ -123,7 +128,7 @@ for tomogram in tomoNames:
 		#rotm = euler2matrix(eulers_relion, axes='zyz', intrinsic=True, right_handed_rotation=True)
 
 		rotm = np.dot(rot_phi, np.dot(rot_theta, rot_psi))
-		#rotm = rotm.T;
+		rotm = rotm.T;
 		exit_rot = np.dot(rotm, exit_angst) + box_shift
 		entry_rot = np.dot(rotm, entry_angst) + box_shift
 
@@ -136,7 +141,7 @@ for tomogram in tomoNames:
 		entry_shift = entry_rot - cm_rot
 		exit_adjusted[count,:] = cm[count,:] + exit_shift
 		entry_adjusted[count,:] = cm[count,:] + entry_shift
-		print('cm{}, exit{}, entry{}'.format(cm[count,:], exit_adjusted[count,:], entry_adjusted[count,:]));
+		#print('cm{}, exit{}, entry{}'.format(cm[count,:], exit_adjusted[count,:], entry_adjusted[count,:]));
 
 		count += 1; 
 	
@@ -144,7 +149,8 @@ for tomogram in tomoNames:
 	adjusted_coordinates = np.column_stack((entry_adjusted, exit_adjusted))
 
 	# save entry and exit coordinates to csv
-	dir_name = "tomomgram_entry_exit_" + filename.split(".")[0] + "/"
+	dir_name = filename.rpartition(".")[0].split("/")[-1] + "_tomogram_entry_exit/"
+	#print(dir_name)
 	os.makedirs(dir_name, exist_ok=True)
 	np.savetxt(dir_name + tomogram + ".csv", adjusted_coordinates, delimiter=",")
 
