@@ -20,7 +20,10 @@ threshold = args.threshold
 output = args.output
 
 csv_files = os.listdir(coordinate_dir)
-polysome_indices = {}
+
+monosome_indices = {}
+dimer_indices = {}
+polychain_indices = {}
 
 #print("csv_files: {}".format(csv_files))
 
@@ -44,19 +47,23 @@ for csv in csv_files:
 	z_distances = ipdm_1d(entry_z, exit_z)
 
 	ipdm_matrix = ipdm_3d(x_distances, y_distances, z_distances)
-	#print(ipdm_matrix)
 
 	filtered_matrix = find_smaller_distances(ipdm_matrix)
 	polysome_matrix = apply_threshold(filtered_matrix, threshold)
 	polysomes = find_polysomes(polysome_matrix)
-	indices = get_ribosomes_in_polysomes(polysomes)
-	
-	polysome_indices[tomogram] = indices
 
+	monosome_indices[tomogram] = get_ribosomes_in_polysomes(polysomes)[0]
+	dimer_indices[tomogram] = get_ribosomes_in_polysomes(polysomes)[1]
+	polychain_indices[tomogram] = get_ribosomes_in_polysomes(polysomes)[2]
+	
 	print(tomogram)
-	print("Ribosomes in polysomes: {}".format(indices))
+	print("monosomes: {}; dimers: {}; polychains: {}".format(monosome_indices, dimer_indices, polychain_indices))
 	print("===========================================================")
 
-#print(polysome_indices)
-polysome_df = pd.DataFrame.from_dict(polysome_indices, orient='index')
-polysome_df.to_csv(output)
+monosomes_df = pd.DataFrame.from_dict(monosome_indices, orient='index')
+dimers_df = pd.DataFrame.from_dict(dimer_indices, orient='index')
+polychains_df = pd.DataFrame.from_dict(polychain_indices, orient='index')
+
+monosomes_df.to_csv(output+'_monosomes.csv')
+dimers_df.to_csv(output+'_dimers.csv')
+polychains_df.to_csv(output+'_polychains.csv')
