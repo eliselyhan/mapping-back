@@ -23,13 +23,21 @@ def find_polysomes(filterd_ipdm: np.ndarray) -> list:
     return list(ds.itersets())
 
 def get_ribosomes_in_polysomes(polysomes):
-    ribosomes_in_polysomes = []
+    monosomes = []
+    dimers = []
+    polychains = []
     for set in polysomes:
-        if len(set) > 1:
+        if len(set) == 1:
             for index in set:
-                ribosomes_in_polysomes.append(index)
+                monosomes.append(index)
+        elif len(set) == 2:
+            for index in set:
+                dimers.append(index)
+        elif len(set) > 2:
+            for index in set:
+                polychains.append(index)
     
-    return ribosomes_in_polysomes
+    return (monosomes, dimers, polychains)
 
 if __name__ == "__main__":
     
